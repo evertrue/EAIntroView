@@ -121,8 +121,8 @@
     });
 }
 
-- (void)skipIntroduction {
-    [self hideWithFadeOutDuration:0.3];
+- (void)linkedinTapped {
+    [self.delegate linkedinButtonTapped];
 }
 
 #pragma mark - Properties
@@ -177,7 +177,7 @@
     
     self.bgImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.pageControl.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.skipButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.linkedinButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 }
 
 - (void)buildBackgroundImage {
@@ -314,12 +314,12 @@
     self.pageControl.numberOfPages = _pages.count;
     [self addSubview:self.pageControl];
     
-    self.skipButton = [[UIButton alloc] initWithFrame:CGRectMake(self.scrollView.frame.size.width - 80, self.pageControl.frame.origin.y - ((30 - self.pageControl.frame.size.height)/2), 80, 30)];
+    self.linkedinButton = [[UIButton alloc] initWithFrame:CGRectMake(20, self.pageControl.frame.origin.y + 5, self.scrollView.frame.size.width - 40, 40)];
     
-    self.skipButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    [self.skipButton setTitle:NSLocalizedString(@"Skip", nil) forState:UIControlStateNormal];
-    [self.skipButton addTarget:self action:@selector(skipIntroduction) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.skipButton];
+    self.linkedinButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    [self.linkedinButton setTitle:NSLocalizedString(@"Login with LinkedIn", nil) forState:UIControlStateNormal];
+    [self.linkedinButton addTarget:self action:@selector(linkedinTapped) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.linkedinButton];
 }
 
 #pragma mark - UIScrollView Delegate
@@ -468,11 +468,11 @@ float easeOutValue(float value) {
     self.pageControl.numberOfPages = _pages.count;
 }
 
-- (void)setSkipButton:(UIButton *)skipButton {
-    [_skipButton removeFromSuperview];
-    _skipButton = skipButton;
-    [_skipButton addTarget:self action:@selector(skipIntroduction) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_skipButton];
+- (void)setlinkedinButton:(UIButton *)linkedinButton {
+    [_linkedinButton removeFromSuperview];
+    _linkedinButton = linkedinButton;
+    [_linkedinButton addTarget:self action:@selector(skipIntroduction) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_linkedinButton];
 }
 
 #pragma mark - Actions
