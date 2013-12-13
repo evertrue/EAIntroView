@@ -69,6 +69,10 @@
 }
 
 - (void)makePanelVisibleAtIndex:(NSInteger)panelIndex{
+    self.skipButton.hidden = YES;
+    if (self.currentPageIndex == [self.pages indexOfObject:self.pages.lastObject] - 1) {
+        self.skipButton.hidden = NO;
+    }
     [UIView animateWithDuration:0.3 animations:^{
         for (int idx = 0; idx < _pages.count; idx++) {
             if (idx == panelIndex) {
@@ -121,8 +125,8 @@
     });
 }
 
-- (void)linkedinTapped {
-    [self.delegate linkedinButtonTapped];
+- (void)skipTapped {
+    [self hideWithFadeOutDuration:0.3];
 }
 
 #pragma mark - Properties
@@ -177,7 +181,7 @@
     
     self.bgImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.pageControl.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.linkedinButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.skipButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 }
 
 - (void)buildBackgroundImage {
@@ -257,7 +261,7 @@
         titleLabel.font = page.titleFont;
         titleLabel.textColor = page.titleColor;
         titleLabel.backgroundColor = [UIColor clearColor];
-        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.textAlignment = NSTextAlignmentLeft;
         titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         [pageView addSubview:titleLabel];
     }
@@ -271,7 +275,7 @@
         descLabel.font = page.descFont;
         descLabel.textColor = page.descColor;
         descLabel.backgroundColor = [UIColor clearColor];
-        descLabel.textAlignment = NSTextAlignmentCenter;
+        descLabel.textAlignment = NSTextAlignmentLeft;
         descLabel.userInteractionEnabled = NO;
         //[descLabel sizeToFit];
         [pageView addSubview:descLabel];
@@ -314,12 +318,12 @@
     self.pageControl.numberOfPages = _pages.count;
     [self addSubview:self.pageControl];
     
-    self.linkedinButton = [[UIButton alloc] initWithFrame:CGRectMake(20, self.pageControl.frame.origin.y + 5, self.scrollView.frame.size.width - 40, 40)];
-    
-    self.linkedinButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    [self.linkedinButton setTitle:NSLocalizedString(@"Login with LinkedIn", nil) forState:UIControlStateNormal];
-    [self.linkedinButton addTarget:self action:@selector(linkedinTapped) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.linkedinButton];
+    self.skipButton = [[UIButton alloc] initWithFrame:CGRectMake((self.frame.size.width - 286) / 2, self.frame.size.height - 195, 286, 45)];
+    self.skipButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    [self.skipButton setImage:[UIImage imageNamed:@"get_started_btn_OFF"] forState:UIControlStateNormal];
+    [self.skipButton setImage:[UIImage imageNamed:@"get_started_btn_ON"] forState:UIControlStateHighlighted];
+    [self.skipButton addTarget:self action:@selector(skipTapped) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.skipButton];
 }
 
 #pragma mark - UIScrollView Delegate
@@ -466,13 +470,6 @@ float easeOutValue(float value) {
     self.pageControl.autoresizingMask =  UIViewAutoresizingFlexibleWidth;
     [self.pageControl addTarget:self action:@selector(showPanelAtPageControl) forControlEvents:UIControlEventValueChanged];
     self.pageControl.numberOfPages = _pages.count;
-}
-
-- (void)setlinkedinButton:(UIButton *)linkedinButton {
-    [_linkedinButton removeFromSuperview];
-    _linkedinButton = linkedinButton;
-    [_linkedinButton addTarget:self action:@selector(skipIntroduction) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_linkedinButton];
 }
 
 #pragma mark - Actions
