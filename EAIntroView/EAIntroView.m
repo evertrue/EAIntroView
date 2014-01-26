@@ -71,8 +71,10 @@
 - (void)makePanelVisibleAtIndex:(NSInteger)panelIndex{
     self.skipButton.alpha = 0;
     [UIView animateWithDuration:0.3 animations:^{
-        if (self.currentPageIndex == [self.pages indexOfObject:self.pages.lastObject] - 1) {
+        if (panelIndex == self.pages.count - 1) {
             self.skipButton.alpha = 1;
+        } else {
+            self.skipButton.alpha = 0;
         }
         for (int idx = 0; idx < _pages.count; idx++) {
             if (idx == panelIndex) {
